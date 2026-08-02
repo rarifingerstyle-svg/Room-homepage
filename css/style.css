@@ -26,13 +26,6 @@
         .shop-link svg {
             transition: transform 0.3s;
         }
-        /* 1. Definisikan variabel di bagian paling atas */
-:root {
-  --color-black: #000000;
-  --font-main: 'League Spartan', sans-serif;
-}
-
-/* 2. Gunakan variabel var(--color-black) */
 *:focus-visible {
   outline: 2px solid var(--color-black);
   outline-offset: 2px;
