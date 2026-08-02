@@ -1,7 +1,7 @@
- @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;600;700&display=swap');
-/* Custom transitions & accessibility helpers */
+      @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;600;700&display=swap');
 
-       .slide-transition {
+	  /* Custom transitions & accessibility helpers */
+        .slide-transition {
             transition: opacity 0.7s ease-in-out;
         }
         .slide-transition.active {
@@ -26,16 +26,18 @@
         .shop-link svg {
             transition: transform 0.3s;
         }
-*:focus-visible {
-  outline: 2px solid var(--color-black);
-  outline-offset: 2px;
-}        /* reduced motion */
+        /* focus-visible */
+        *:focus-visible {
+            outline: 2px solid #000;
+            outline-offset: 2px;
+        }
+        /* reduced motion */
         @media (prefers-reduced-motion: reduce) {
             *,
             *::before,
             *::after {
-                animation-duration: 0.01ms;
-                transition-duration: 0.01ms;
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
             }
         }
         /* base font */
@@ -43,4 +45,3 @@
             font-family: 'League Spartan', sans-serif;
         }
         /* custom font import (League Spartan) */
-       
