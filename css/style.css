@@ -1,47 +1,66 @@
-      @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;600;700&display=swap');
+/* 1. Import Wajib di Baris Paling Atas */
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;600;700&display=swap');
 
-	  /* Custom transitions & accessibility helpers */
-        .slide-transition {
-            transition: opacity 0.7s ease-in-out;
-        }
-        .slide-transition.active {
-            opacity: 1;
-        }
-        .slide-transition:not(.active) {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .mobile-nav-overlay {
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .mobile-nav-backdrop {
-            transition: opacity 0.4s ease;
-        }
-        .shop-link {
-            transition: color 0.3s, gap 0.3s;
-        }
-        .shop-link:hover svg {
-            transform: translateX(4px);
-        }
-        .shop-link svg {
-            transition: transform 0.3s;
-        }
-        /* focus-visible */
-        *:focus-visible {
-            outline: 2px solid #000;
-            outline-offset: 2px;
-        }
-        /* reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-        /* base font */
-        body {
-            font-family: 'League Spartan', sans-serif;
-        }
-        /* custom font import (League Spartan) */
+/* 2. Definisi CSS Custom Properties (Variables) */
+:root {
+  --font-main: 'League Spartan', sans-serif;
+  --color-black: #000000;
+  --transition-fast: 0.3s;
+  --transition-medium: 0.4s;
+  --transition-slow: 0.7s;
+}
+
+/* 3. Global & Base Styles */
+body {
+  font-family: var(--font-main);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-black);
+  outline-offset: 2px;
+}
+
+/* 4. Custom Component Transitions */
+.slide-transition {
+  transition: opacity var(--transition-slow) ease-in-out;
+}
+
+.slide-transition.active {
+  opacity: 1;
+}
+
+.slide-transition:not(.active) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mobile-nav-overlay {
+  transition: transform var(--transition-medium) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-nav-backdrop {
+  transition: opacity var(--transition-medium) ease;
+}
+
+/* 5. Order Selectors: Dari Kurang Spesifik ke Lebih Spesifik */
+.shop-link {
+  transition: color var(--transition-fast), gap var(--transition-fast);
+}
+
+.shop-link svg {
+  transition: transform var(--transition-fast);
+}
+
+.shop-link:hover svg {
+  transform: translateX(4px);
+}
+
+/* 6. Accessibility: Reduced Motion (Tanpa !important) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms;
+    transition-duration: 0.01ms;
+  }
+}
