@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png" />
+    <title>Room | Homepage (React + Tailwind)</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel standalone for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useCallback } = React;
+
+        // ---------- SLIDE DATA ----------
+        const slidesData = [
+            {
+                id: 0,
+                title: 'Discover innovative ways to decorate',
+                description: `We provide unmatched quality, comfort, and style for property owners across the country. Our experts combine form and function in bringing your vision to life. Create a room in your own style with our collection and make your property a reflection of you and what you love.`,
+                desktopImage: './images/desktop-image-hero-1.jpg',
+                mobileImage: './images/mobile-image-hero-1.jpg',
+            },
+            {
+                id: 1,
+                title: 'We are available all across the globe',
+                description: `With stores all over the world, it's easy for you to find furniture for your home or place of business. Locally, we're in most major cities throughout the country. Find the branch nearest you using our store locator. Any questions? Don't hesitate to contact us today.`,
+                desktopImage: './images/desktop-image-hero-2.jpg',
+                mobileImage: './images/mobile-image-hero-2.jpg',
+            },
+            {
+                id: 2,
+                title: 'Manufactured with the best materials',
+                description: `Our modern furniture store provide a high level of quality. Our company has invested in advanced technology to ensure that every product is made as perfect and as consistent as possible. With three decades of experience in this industry, we understand what customers want for their home and office.`,
+                desktopImage: './images/desktop-image-hero-3.jpg',
+                mobileImage: './images/mobile-image-hero-3.jpg',
+            },
+        ];
+
+        // ---------- COMPONENTS ----------
+
+        // Logo SVG
+        const Logo = () => (
+            <svg width="60" height="14" viewBox="0 0 60 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 0H3.9375V10.5H10.5V14H0V0Z" fill="white" />
+                <path d="M15.75 0H19.6875V14H15.75V0Z" fill="white" />
+                <path d="M23.625 0H32.8125V3.5H27.5625V5.25H31.5V8.75H27.5625V10.5H32.8125V14H23.625V0Z" fill="white" />
+                <path d="M36.75 0H40.6875V10.5H47.25V14H36.75V0Z" fill="white" />
+                <path d="M50.625 0H60V3.5H54.5625V5.25H58.5V8.75H54.5625V10.5H60V14H50.625V0Z" fill="white" />
+            </svg>
+        );
+
+        // Arrow SVG (right)
+        const ArrowRight = () => (
+            <svg width="40" height="12" viewBox="0 0 40 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M34.5 0L40 6L34.5 12" stroke="currentColor" strokeWidth="2" />
+                <path d="M0 6H39" stroke="currentColor" strokeWidth="2" />
+            </svg>
+        );
+
+        // Angle left / right for slider buttons
+        const AngleLeft = () => (
+            <svg width="14" height="24" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13 0.999999L1.00001 12L13 23" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+        );
+        const AngleRight = () => (
+            <svg width="14" height="24" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 0.999999L13 12L1 23" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+        );
+
+        // Hamburger
+        const Hamburger = () => (
+            <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="20" height="2" fill="white" />
+                <rect y="6" width="20" height="2" fill="white" />
+                <rect y="12" width="20" height="2" fill="white" />
+            </svg>
+        );
+
+        // Close
+        const CloseIcon = () => (
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1.63623" y="0.222168" width="20" height="2" transform="rotate(45 1.63623 0.222168)" fill="black" />
+                <rect x="0.222168" y="14.3638" width="20" height="2" transform="rotate(-45 0.222168 14.3638)" fill="black" />
+            </svg>
+        );
+
+        // ----- HEADER -----
+        const Header = ({ isMenuOpen, toggleMenu, closeMenu }) => {
+            return (
+                <header className="absolute top-0 left-0 w-full z-20 px-6 md:px-10 py-6 flex items-center gap-8 md:gap-14">
+                    <a href="#" className="flex-shrink-0 hover:opacity-80 transition" aria-label="Room homepage">
+                        <Logo />
+                    </a>
+
+                    {/* Desktop nav */}
+                    <nav className="hidden md:block" aria-label="Main navigation">
+                        <ul className="flex gap-8 text-white font-semibold text-sm tracking-wide">
+                            <li><a href="#" className="relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-0.5 after:bg-white after:transition-all hover:after:w-full">Home</a></li>
+                            <li><a href="#" className="relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-0.5 after:bg-white after:transition-all hover:after:w-full">Shop</a></li>
+                            <li><a href="#" className="relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-0.5 after:bg-white after:transition-all hover:after:w-full">About</a></li>
+                            <li><a href="#" className="relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-0.5 after:bg-white after:transition-all hover:after:w-full">Contact</a></li>
+                        </ul>
+                    </nav>
+
+                    {/* Mobile menu toggle */}
+                    <button
+                        className="md:hidden ml-auto focus:outline-none"
+                        onClick={toggleMenu}
+                        aria-expanded={isMenuOpen}
+                        aria-controls="mobile-nav"
+                        aria-label="Open menu"
+                    >
+                        <Hamburger />
+                    </button>
+
+                    {/* Mobile nav overlay */}
+                    <div
+                        id="mobile-nav"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-label="Mobile navigation"
+                        className={`fixed inset-0 z-30 bg-white transform -translate-x-full transition-transform duration-400 ease-in-out ${isMenuOpen ? 'translate-x-0' : ''} flex flex-col p-8 overflow-y-auto`}
+                    >
+                        <div className="flex justify-end mb-12">
+                            <button onClick={closeMenu} aria-label="Close menu" className="focus:outline-none">
+                                <CloseIcon />
+                            </button>
+                        </div>
+                        <ul className="flex flex-col gap-6 text-xl font-bold text-black">
+                            <li><a href="#" onClick={closeMenu}>Home</a></li>
+                            <li><a href="#" onClick={closeMenu}>Shop</a></li>
+                            <li><a href="#" onClick={closeMenu}>About</a></li>
+                            <li><a href="#" onClick={closeMenu}>Contact</a></li>
+                        </ul>
+                    </div>
+
+                    {/* Backdrop */}
+                    <div
+                        className={`fixed inset-0 z-25 bg-black/40 transition-opacity duration-400 ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+                        onClick={closeMenu}
+                        aria-hidden="true"
+                    ></div>
+                </header>
+            );
+        };
+
+        // ----- HERO SLIDER -----
+        const Hero = ({ slides, currentIndex, nextSlide, prevSlide }) => {
+            const current = slides[currentIndex];
+
+            return (
+                <section className="grid grid-cols-1 md:grid-cols-2 min-h-screen" aria-label="Featured products">
+                    {/* Image side */}
+                    <div className="relative overflow-hidden bg-gray-300 min-h-[20rem] md:min-h-full">
+                        {slides.map((slide, idx) => (
+                            <div
+                                key={slide.id}
+                                className={`absolute inset-0 slide-transition ${idx === currentIndex ? 'active' : ''}`}
+                            >
+                                <picture>
+                                    <source media="(min-width: 768px)" srcSet={slide.desktopImage} />
+                                    <img src={slide.mobileImage} alt={slide.title} className="w-full h-full object-cover" />
+                                </picture>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Content side */}
+                    <div className="relative bg-white flex flex-col justify-center px-8 py-12 md:px-12 md:py-16 lg:px-20">
+                        <div className="max-w-xl">
+                            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black leading-tight mb-4">
+                                {current.title}
+                            </h1>
+                            <p className="text-gray-500 text-base md:text-lg leading-relaxed mb-6">
+                                {current.description}
+                            </p>
+                            <a href="#" className="shop-link inline-flex items-center gap-4 font-bold text-sm tracking-[0.6em] uppercase text-gray-800 hover:text-gray-500 group">
+                                Shop now
+                                <ArrowRight />
+                                <span className="sr-only">, explore our collection</span>
+                            </a>
+                        </div>
+
+                        {/* Slider arrows */}
+                        <div className="absolute bottom-0 right-0 flex bg-black" role="group" aria-label="Slider controls">
+                            <button
+                                onClick={prevSlide}
+                                className="p-4 md:p-5 bg-black hover:bg-gray-800 transition focus:outline-none"
+                                aria-label="Previous slide"
+                            >
+                                <AngleLeft />
+                            </button>
+                            <button
+                                onClick={nextSlide}
+                                className="p-4 md:p-5 bg-black hover:bg-gray-800 transition focus:outline-none"
+                                aria-label="Next slide"
+                            >
+                                <AngleRight />
+                            </button>
+                        </div>
+
+                        {/* Live region for screen readers */}
+                        <div className="sr-only" aria-live="polite" aria-atomic="true">
+                            Slide {currentIndex + 1} of {slides.length}: {current.title}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // ----- ABOUT -----
+        const About = () => (
+            <section className="grid grid-cols-1 md:grid-cols-3" aria-labelledby="about-heading">
+                <div className="overflow-hidden min-h-[12rem] md:min-h-[20rem]">
+                    <img src="./images/image-about-dark.jpg" alt="Dark wooden chair and side table" className="w-full h-full object-cover" />
+                </div>
+                <div className="flex flex-col justify-center px-6 py-10 md:px-10 md:py-14 bg-white">
+                    <h2 id="about-heading" className="text-sm font-bold tracking-[0.6em] uppercase text-black mb-3">
+                        About our furniture
+                    </h2>
+                    <p className="text-gray-500 text-base leading-relaxed">
+                        Our multifunctional collection blends design and function to suit your individual taste.
+                        Make each room unique, or pick a cohesive theme that best express your interests and what
+                        inspires you. Find the furniture pieces you need, from traditional to contemporary styles
+                        or anything in between. Product specialists are available to help you create your dream space.
+                    </p>
+                </div>
+                <div className="overflow-hidden min-h-[12rem] md:min-h-[20rem]">
+                    <img src="./images/image-about-light.jpg" alt="Bright room with white furniture and plants" className="w-full h-full object-cover" />
+                </div>
+            </section>
+        );
+
+        // ----- FOOTER -----
+        const Footer = () => (
+            <footer className="text-center py-4 text-xs text-gray-500 bg-white border-t border-gray-100">
+                <p>
+                    Challenge by{' '}
+                    <a href="https://www.frontendmentor.io?ref=challenge" target="_blank" rel="noopener noreferrer" className="font-semibold text-gray-800 hover:text-black transition">
+                        Frontend Mentor
+                    </a>
+                    . Coded by{' '}
+                    <a href="https://www.frontendmentor.io/profile/rarifingerstyle-svg" className="font-semibold text-gray-800 hover:text-black transition">
+                        Ahmad Asrari
+                    </a>
+                    .
+                </p>
+            </footer>
+        );
+
+        // ----- APP -----
+        const App = () => {
+            const [currentIndex, setCurrentIndex] = useState(0);
+            const [isMenuOpen, setIsMenuOpen] = useState(false);
+            const totalSlides = slidesData.length;
+            const [isTransitioning, setIsTransitioning] = useState(false);
+
+            const goToSlide = useCallback(
+                (index) => {
+                    if (isTransitioning) return;
+                    let newIndex = index;
+                    if (newIndex < 0) newIndex = totalSlides - 1;
+                    if (newIndex >= totalSlides) newIndex = 0;
+                    if (newIndex === currentIndex) return;
+                    setIsTransitioning(true);
+                    setCurrentIndex(newIndex);
+                    setTimeout(() => setIsTransitioning(false), 500);
+                },
+                [currentIndex, isTransitioning, totalSlides]
+            );
+
+            const nextSlide = () => goToSlide(currentIndex + 1);
+            const prevSlide = () => goToSlide(currentIndex - 1);
+
+            const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+            const closeMenu = () => setIsMenuOpen(false);
+
+            // Keyboard navigation for slider
+            useEffect(() => {
+                const handler = (e) => {
+                    const hero = document.querySelector('section[aria-label="Featured products"]');
+                    if (!hero || !hero.contains(document.activeElement)) return;
+                    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        nextSlide();
+                    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        prevSlide();
+                    }
+                };
+                document.addEventListener('keydown', handler);
+                return () => document.removeEventListener('keydown', handler);
+            }, [nextSlide, prevSlide]);
+
+            // Swipe support
+            useEffect(() => {
+                let touchStartX = 0;
+                let touchStartY = 0;
+                const imageWrapper = document.querySelector('.hero-image-wrapper');
+                if (!imageWrapper) return;
+
+                const handleTouchStart = (e) => {
+                    const touch = e.changedTouches[0];
+                    touchStartX = touch.clientX;
+                    touchStartY = touch.clientY;
+                };
+                const handleTouchEnd = (e) => {
+                    if (touchStartX === 0) return;
+                    const touch = e.changedTouches[0];
+                    const deltaX = touch.clientX - touchStartX;
+                    const deltaY = touch.clientY - touchStartY;
+                    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
+                        e.preventDefault();
+                        if (deltaX > 0) prevSlide();
+                        else nextSlide();
+                    }
+                    touchStartX = 0;
+                    touchStartY = 0;
+                };
+                imageWrapper.addEventListener('touchstart', handleTouchStart, { passive: true });
+                imageWrapper.addEventListener('touchend', handleTouchEnd, { passive: false });
+                return () => {
+                    imageWrapper.removeEventListener('touchstart', handleTouchStart);
+                    imageWrapper.removeEventListener('touchend', handleTouchEnd);
+                };
+            }, [nextSlide, prevSlide]);
+
+            return (
+                <div className="min-h-screen flex flex-col">
+                    <Header isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} closeMenu={closeMenu} />
+                    <main className="flex-1">
+                        <Hero
+                            slides={slidesData}
+                            currentIndex={currentIndex}
+                            nextSlide={nextSlide}
+                            prevSlide={prevSlide}
+                        />
+                        <About />
+                    </main>
+                    <Footer />
+                </div>
+            );
+        };
+
+        // ---------- RENDER ----------
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+    <style>
+        /* Custom transitions & accessibility helpers */
+        .slide-transition {
+            transition: opacity 0.7s ease-in-out;
+        }
+        .slide-transition.active {
+            opacity: 1;
+        }
+        .slide-transition:not(.active) {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .mobile-nav-overlay {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .mobile-nav-backdrop {
+            transition: opacity 0.4s ease;
+        }
+        .shop-link {
+            transition: color 0.3s, gap 0.3s;
+        }
+        .shop-link:hover svg {
+            transform: translateX(4px);
+        }
+        .shop-link svg {
+            transition: transform 0.3s;
+        }
+        /* focus-visible */
+        *:focus-visible {
+            outline: 2px solid #000;
+            outline-offset: 2px;
+        }
+        /* reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        /* base font */
+        body {
+            font-family: 'League Spartan', sans-serif;
+        }
+        /* custom font import (League Spartan) */
+        @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;600;700&display=swap');
+    </style>
