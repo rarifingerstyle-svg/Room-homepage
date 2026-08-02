@@ -134,7 +134,7 @@
                         className={`fixed inset-0 z-30 bg-white transform -translate-x-full transition-transform duration-400 ease-in-out ${isMenuOpen ? 'translate-x-0' : ''} flex flex-col p-8 overflow-y-auto`}
                     >
                         <div className="flex justify-end mb-12">
-                            <button onClick={closeMenu} aria-label="Close menu" className="focus:outline-none">
+                            <button type="button" onClick={closeMenu} aria-label="Close menu" className="focus:outline-none">
                                 <CloseIcon />
                             </button>
                         </div>
@@ -196,6 +196,7 @@
                         {/* Slider arrows */}
                         <div className="absolute bottom-0 right-0 flex bg-black" role="group" aria-label="Slider controls">
                             <button
+                                type="button"
                                 onClick={prevSlide}
                                 className="p-4 md:p-5 bg-black hover:bg-gray-800 transition focus:outline-none"
                                 aria-label="Previous slide"
@@ -203,6 +204,7 @@
                                 <AngleLeft />
                             </button>
                             <button
+                                type="button"
                                 onClick={nextSlide}
                                 className="p-4 md:p-5 bg-black hover:bg-gray-800 transition focus:outline-none"
                                 aria-label="Next slide"
