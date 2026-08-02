@@ -1,6 +1,7 @@
  @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;600;700&display=swap');
 /* Custom transitions & accessibility helpers */
-        .slide-transition {
+:root
+       .slide-transition {
             transition: opacity 0.7s ease-in-out;
         }
         .slide-transition.active {
